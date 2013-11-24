@@ -17,6 +17,8 @@ class Boot_Element extends Singleton_Prototype
         $this->request();
         $this->stdin();
 
+        define('BOOT_HAS_PASSED', true);
+
         return $this;
     }
 
