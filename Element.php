@@ -76,7 +76,7 @@ class Boot_Element extends Singleton_Prototype
         $_SERVER['Authorization'] = isset($all_headers['Authorization']) ? $all_headers['Authorization'] : '';
 
         // Just log first version
-        trigger_error('Authorization: '.$_SERVER['Authorization'], E_USER_WARNING);
+        trigger_error('Authorization: '.$_SERVER['Authorization'], E_USER_NOTICE);
     }
 
     /**
