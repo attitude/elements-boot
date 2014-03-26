@@ -161,11 +161,9 @@ class Boot_Element extends Singleton_Prototype
             define('STDIN', fopen("php://input", "r"));
         }
 
-        if (empty(${'_'.$_SERVER['REQUEST_METHOD']})) {
-            $global = '_'.$_SERVER['REQUEST_METHOD'];
-
-            $GLOBALS[$global] = array();
-
+        $global = '_'.$_SERVER['REQUEST_METHOD'];
+        
+        if (empty($GLOBALS[$global])) {
             while ($data = trim(fgets(STDIN))) {
                 if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE']==='application/x-www-form-urlencoded') {
                     parse_str($data, $data);
