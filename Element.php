@@ -98,13 +98,22 @@ class Boot_Element extends Singleton_Prototype
     {
         $_SERVER['REQUEST_URI_ORIGINAL'] = $_SERVER['REQUEST_URI'];
 
-        // Translate '-' as '_' and decode spacial characters
-        $_SERVER['REQUEST_URI'] = str_replace('-', '_', urldecode($_SERVER['REQUEST_URI']));
+        if (DependencyContainer::get('Boot::dashesToUnderscores', false)) {
+            // Translate '-' as '_'
+            $_SERVER['REQUEST_URI'] = str_replace('-', '_', $_SERVER['REQUEST_URI']);
+        }
 
-        // Set URI fragments
-        if (strstr($_SERVER['REQUEST_URI'], '#')) {
-            list($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_FRAGMENT']) = explode('#', $_SERVER['REQUEST_URI']);
-            $_SERVER['REQUEST_FRAGMENT'] = explode('|', $_SERVER['REQUEST_FRAGMENT']);
+        if (DependencyContainer::get('Boot::decodeSpecialCharacters', true)) {
+            // Decode spacial characters
+            $_SERVER['REQUEST_URI'] = urldecode($_SERVER['REQUEST_URI']);
+        }
+
+        if (DependencyContainer::get('Boot::setupRequestFragment', true)) {
+            // Set URI fragments
+            if (strstr($_SERVER['REQUEST_URI'], '#')) {
+                list($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_FRAGMENT']) = explode('#', $_SERVER['REQUEST_URI']);
+                $_SERVER['REQUEST_FRAGMENT'] = explode('|', $_SERVER['REQUEST_FRAGMENT']);
+            }
         }
 
         // There is $_SERVER['QUERY_STRING'] available, remove ?query from SERVER_URI.
@@ -114,7 +123,6 @@ class Boot_Element extends Singleton_Prototype
 
         // Remove trailing slash by default
         $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/');
-
         $_SERVER['REQUEST_URI'] = empty($_SERVER['REQUEST_URI']) ? '/' : $_SERVER['REQUEST_URI'];
 
         // Create custom $_SERVER global
@@ -162,7 +170,7 @@ class Boot_Element extends Singleton_Prototype
         }
 
         $global = '_'.$_SERVER['REQUEST_METHOD'];
-        
+
         if (empty($GLOBALS[$global])) {
             while ($data = trim(fgets(STDIN))) {
                 if (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE']==='application/x-www-form-urlencoded') {
