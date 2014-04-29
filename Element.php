@@ -130,9 +130,9 @@ class Boot_Element extends Singleton_Prototype
         // SET PSEUDO ACCEPT ///////////////////////////////////////////////////////////
 
         if (strstr($_SERVER['REQUEST_URI'], '.')) {
-            $ext = get_file_extension($_SERVER['REQUEST_URI']);
+            $ext = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_EXTENSION);
             if (!empty($ext) && !strstr($ext, '/')) {
-                $_SERVER['REQUEST_URI'] = get_file_filename($_SERVER['REQUEST_URI']);
+                $_SERVER['REQUEST_URI'] = pathinfo($_SERVER['REQUEST_URI'], PATHINFO_FILENAME);
                 $_SERVER['HTTP_ACCEPT'] = "*/{$ext};";
             }
         }
