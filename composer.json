@@ -9,6 +9,6 @@
         }
     ],
     "require": {
-        "attitude/Elements/Singleton": "0.2.*"
+        "attitude/Elements/Singleton": "~0.2.0"
     }
 }
