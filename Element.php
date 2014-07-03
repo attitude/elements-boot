@@ -71,11 +71,13 @@ class Boot_Element extends Singleton_Prototype
             trigger_error($is_attack, E_USER_ERROR);
         }
 
-        // Check the Authorization
-        $all_headers = apache_request_headers();
-        $_SERVER['Authorization'] = isset($all_headers['Authorization']) ? $all_headers['Authorization'] : '';
+        if (function_exists('apache_request_headers')) {
+            // Check the Authorization
+            $all_headers = apache_request_headers();
+            $_SERVER['Authorization'] = isset($all_headers['Authorization']) ? $all_headers['Authorization'] : '';
 
-        // trigger_error('Authorization: '.$_SERVER['Authorization'], E_USER_NOTICE);
+            // trigger_error('Authorization: '.$_SERVER['Authorization'], E_USER_NOTICE);
+        }
     }
 
     /**
